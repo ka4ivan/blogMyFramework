@@ -1,1 +1,3 @@
 # blogMyFramework
+
+admin/login
