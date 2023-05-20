@@ -1,0 +1,68 @@
+<?php
+
+namespace application\controllers;
+
+use application\core\Controller;
+use application\lib\Db;
+use application\lib\Pagination;
+
+class MainController extends Controller
+{
+    public function indexAction()
+    {
+        $pagination = new Pagination($this->route, $this->model->postsCount());
+        $vars =
+            [
+                'pagination' => $pagination->get(),
+                'list' => $this->model->postList($this->route['page']),
+            ];
+        $this->view->render('Main page', $vars);
+    }
+
+    public function aboutAction()
+    {
+        $this->view->render('Про нас');
+    }
+
+    public function contactAction()
+    {
+        if (!empty($_POST))
+        {
+            if (!$this->model->contactValidate($_POST))
+            {
+                $this->view->message('error', $this->model->error);
+            }
+            mail('ivankachula602@gmail.com', 'message from blog, name - ', $_POST['name'] . '|' . $_POST['email']. '|' . $_POST['text']);
+            $this->view->message('succes', 'mail send to admin');
+        }
+        $this->view->render('Контакти');
+    }
+
+    public function postAction()
+    {
+        $this->view->render('Пост');
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
